@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Metarefresh Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Metarefresh Tool</h1>
+    
+    <form action="/add" method="POST">
+        <label for="name">Link Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="url">URL:</label>
+        <input type="url" id="url" name="url" required>
+        <button type="submit">Add Link</button>
+    </form>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Link Name</th>
+                <th>URL</th>
+                <th>Traffic</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in links %}
+            <tr>
+                <td>
+                    <a href="/redirect/{{ link['id'] }}">{{ link['name'] }}</a>
+                </td>
+                <td>{{ link['url'] }}</td>
+                <td>{{ link['traffic'] }}</td>
+                <td>
+                    <form action="/rename/{{ link['id'] }}" method="POST">
+                        <input type="text" name="new_name" required>
+                        <button type="submit">Rename</button>
+                    </form>
+                    <form action="/delete/{{ link['id'] }}" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
